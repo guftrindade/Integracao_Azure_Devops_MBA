@@ -1,6 +1,6 @@
 ﻿namespace Devops.ViewModels.Devops.Response
 {
-    public class ResponseRepository
+    public class ResponseResource
     {
         /// <summary>
         /// Id do repositório no Azure Devops.

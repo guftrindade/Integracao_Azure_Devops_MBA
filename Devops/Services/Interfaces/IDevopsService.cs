@@ -6,6 +6,6 @@ namespace Devops.Services.Interfaces
     public interface IDevopsService
     {
         Task<ResponseAllProjects> GetAllProjectsAsync();
-        Task<ResponseRepository> CreateRepositoryAsync(RequestRepository request);
+        Task<ResponseResource> CreateRepositoryAsync(RequestRepository request);
     }
 }

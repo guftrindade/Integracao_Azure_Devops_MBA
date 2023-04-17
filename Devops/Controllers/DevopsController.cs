@@ -38,7 +38,7 @@ namespace Devops.Controllers
         [HttpPost("repository")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<ResponseRepository>> CreateRepositoryAsync([FromBody] RequestRepository request)
+        public async Task<ActionResult<ResponseResource>> CreateRepositoryAsync([FromBody] RequestRepository request)
         {
             var response = await ServiceCreateRepositoryAsync(request);
 
@@ -50,7 +50,7 @@ namespace Devops.Controllers
             return Created(nameof(GetAllProjectsAsync), response);
         }
 
-        public async Task<ResponseRepository> ServiceCreateRepositoryAsync(RequestRepository request)
+        public async Task<ResponseResource> ServiceCreateRepositoryAsync(RequestRepository request)
         {
             var json = JsonConvert.SerializeObject(request);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
@@ -65,7 +65,7 @@ namespace Devops.Controllers
             }
 
             var responseBody = await response.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<ResponseRepository>(responseBody);
+            return JsonConvert.DeserializeObject<ResponseResource>(responseBody);
         }
 
         public async Task<ResponseAllProjects> ServiceGetAllProjectsAsync()
