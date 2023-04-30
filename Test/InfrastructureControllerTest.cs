@@ -1,15 +1,23 @@
 using Devops.Controllers;
-using Devops.ViewModels.Infrastructure.Response;
 using Microsoft.AspNetCore.Mvc;
+using Devops.Services.Interfaces;
+using Moq;
 using Test.Mocks;
 
 namespace Test
 {
     public class InfrastructureControllerTest
     {
-        private static InfrastructureController GetController()
+        private readonly Mock<IInfrastructureService> _infrastructureServiceMock;
+
+        public InfrastructureControllerTest()
         {
-            return new InfrastructureController();
+            _infrastructureServiceMock = new Mock<IInfrastructureService>();
+        }
+
+        private InfrastructureController GetController()
+        {
+            return new InfrastructureController(_infrastructureServiceMock.Object);
         }
 
         [Fact]

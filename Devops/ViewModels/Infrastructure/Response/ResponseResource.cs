@@ -1,5 +1,4 @@
-﻿using Devops.ViewModels.Infrastructure.Enums;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Devops.ViewModels.Infrastructure.Response
 {
