@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Devops.ViewModels.Devops.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace Devops.ViewModels.Devops.Request
 {
@@ -13,15 +14,15 @@ namespace Devops.ViewModels.Devops.Request
 
         public Project Project { get; set; }
 
-        ///// <summary>
-        ///// Tipo do repositório a ser criado.\
-        ///// 1 - Backend\
-        ///// 2 - Function\
-        ///// 3 - Frontend
-        ///// </summary>
-        ///// <example>1</example>
-        //[Required]
-        //public ResourceType? ResourceType { get; set; }
+        /// <summary>
+        /// Tipo do repositório a ser criado.\
+        /// 1 - Backend\
+        /// 2 - Function\
+        /// 3 - Frontend
+        /// </summary>
+        /// <example>1</example>
+        [Required]
+        public ResourceType ResourceType { get; set; }
     }
 
     public class Project

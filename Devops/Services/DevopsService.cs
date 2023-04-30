@@ -4,10 +4,13 @@ using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Net;
 using System.Text;
+using Devops.Util;
+using Devops.ViewModels.Devops.Enums;
+using Devops.Services.Interfaces;
 
 namespace Devops.Services
 {
-    public class DevopsService
+    public class DevopsService : IDevopsService
     {
         private readonly IHttpClientFactory _httpClientFactory;
 
@@ -16,10 +19,12 @@ namespace Devops.Services
             _httpClientFactory = httpClientFactory;
         }
 
-        const string PersonalAccessToken = "dekwz3omoh3isfftycb3lelh7b5x5cmrvbrkkmqvrvfqpcpyji6q";
+        const string PersonalAccessToken = "dekwz3omoh3isfftycb3lelh7b5x5cmrvbrkkmqvr";
 
-        public async Task<ResponseResource> ServiceCreateRepositoryAsync(RequestRepository request)
+        public async Task<ResponseResource> CreateRepositoryAsync(RequestRepository request)
         {
+            request.Name = SetRepositoryName(request.Name, request.ResourceType);
+
             var json = JsonConvert.SerializeObject(request);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
@@ -36,7 +41,7 @@ namespace Devops.Services
             return JsonConvert.DeserializeObject<ResponseResource>(responseBody);
         }
 
-        public async Task<ResponseAllProjects> ServiceGetAllProjectsAsync()
+        public async Task<ResponseAllProjects> GetAllProjectsAsync()
         {
             var httpClient = SetHttpClient();
             string requestUri = "https://dev.azure.com/catalogomba/00414692-b741-4744-9162-6098e58a5fae/_apis/git/repositories";
@@ -60,6 +65,12 @@ namespace Devops.Services
                     Encoding.ASCII.GetBytes(
                         string.Format("{0}:{1}", "", PersonalAccessToken))));
             return httpClient;
+        }
+
+        private static string SetRepositoryName(string name, ResourceType resourceType)
+        {
+            var newName =  Utility.SetDefaultRepositoryName(name, resourceType);
+            return newName;
         }
     }
 }
