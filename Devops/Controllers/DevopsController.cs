@@ -2,6 +2,9 @@
 using Devops.ViewModels.Devops.Request;
 using Devops.ViewModels.Devops.Response;
 using Devops.Services.Interfaces;
+using Newtonsoft.Json;
+using System.Net;
+using System.Text;
 
 namespace Devops.Controllers
 {
@@ -12,6 +15,21 @@ namespace Devops.Controllers
         public DevopsController(IDevopsService devopsService)
         {
             _devopsService = devopsService;
+        }
+
+        [HttpPost("repository")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<ResponseResource>> CreateRepositoryAsync([FromBody] RequestRepository request)
+        {
+            var response = await _devopsService.CreateRepositoryAsync(request);
+
+            if (response == null)
+            {
+                return BadRequest();
+            }
+
+            return Created(nameof(GetAllProjectsAsync), response);
         }
 
         [HttpGet("projects")]
@@ -29,19 +47,6 @@ namespace Devops.Controllers
             return Ok(response);
         }
 
-        [HttpPost("repository")]
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<ResponseResource>> CreateRepositoryAsync([FromBody] RequestRepository request)
-        {
-            var response = await _devopsService.CreateRepositoryAsync(request);
-
-            if (response == null)
-            {
-                return BadRequest();
-            }
-
-            return Created(nameof(GetAllProjectsAsync), response);
-        }
+        
     }
 }
