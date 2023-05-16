@@ -1,27 +1,29 @@
-﻿using Devops.ViewModels.Infrastructure.Request;
+﻿using Devops.RabbitServices.Interfaces;
+using Devops.Services.Interfaces;
+using Devops.ViewModels.Infrastructure.Request;
 using Devops.ViewModels.Infrastructure.Response;
 
 namespace Devops.Services
 {
-    public class InfrastructureService
+    public class InfrastructureService : IInfrastructureService
     {
-        public ResponseResource ServiceRequestResource(RequestResource request)
+        private readonly IRabbitMessageService _rabbitMessageService;
+
+        public InfrastructureService(IRabbitMessageService rabbitMessageService)
         {
-            return new ResponseResource
-            {
-                Status = "Em processo de aprovação",
-                ProtocolNumber = 15468,
-                Note = NoteMessage(request.Email)
-            };
+            _rabbitMessageService = rabbitMessageService;
         }
 
-        private static string NoteMessage(string email)
+        public async Task<ResponseResource> RequestResource(RequestResource request)
         {
-            var requestTime = DateTime.Now;
+            _rabbitMessageService.Send(request);
 
-            return $"Solicitação enviada para o Setor de Infraestrutura em {requestTime} e " +
-                   $"dentro de 3 dias úteis uma resposta será enviada para " +
-                   $"{email}. Qualquer outra ponderação, favor entrar em contato.";
+            return new ResponseResource
+            {
+                Status = "Temp",
+                ProtocolNumber = 15468,
+                Note = "Temp"
+            };
         }
     }
 }

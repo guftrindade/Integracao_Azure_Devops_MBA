@@ -1,3 +1,5 @@
+using Devops.RabbitServices;
+using Devops.RabbitServices.Interfaces;
 using Devops.Services;
 using Devops.Services.Interfaces;
 using System.Net.Http.Headers;
@@ -44,6 +46,7 @@ namespace Devops
         public static void Register(this IServiceCollection services)
         {
             services.AddTransient<IDevopsService, DevopsService>();
+            services.AddScoped<IRabbitMessageService, RabbitMessageService>();
         }
     }
 }
