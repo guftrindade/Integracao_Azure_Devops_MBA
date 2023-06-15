@@ -1,11 +1,10 @@
-﻿
-using Devops.Services.Interfaces;
-using Devops.ViewModels.Infrastructure.Request;
-using Devops.ViewModels.Infrastructure.Response;
+﻿using Infraestrutura.Api.Models.Request;
+using Infraestrutura.Api.Models.Response;
+using Infraestrutura.Api.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using NSwag.Annotations;
 
-namespace Devops.Controllers
+namespace Infraestrutura.Api.Controllers
 {
     [Route("api/resource")]
     [ApiController]
@@ -24,9 +23,7 @@ namespace Devops.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public ActionResult<ResponseResource> RequestResource([FromBody] RequestResource request)
         {
-            _infrastructureService.RequestResource(request);
-
-            var response = new ResponseResource();
+            var response = _infrastructureService.RequestResource(request);
 
             if (response == null)
             {

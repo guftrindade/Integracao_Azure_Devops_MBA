@@ -1,7 +1,7 @@
-﻿using Devops.ViewModels.Infrastructure.Enums;
+﻿using Infraestrutura.Api.Models.Enums;
 using System.ComponentModel.DataAnnotations;
 
-namespace Devops.ViewModels.Infrastructure.Request
+namespace Infraestrutura.Api.Models.Request
 {
     public class RequestResource
     {
@@ -33,7 +33,5 @@ namespace Devops.ViewModels.Infrastructure.Request
         /// </summary>
         /// <example>gustavotrindade@dev.com</example>
         public string Email { get; set; }
-
-        public DateTime Date { get; set; } = DateTime.UtcNow;
     }
 }
