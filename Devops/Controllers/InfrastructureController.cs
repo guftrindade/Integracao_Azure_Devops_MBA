@@ -24,7 +24,9 @@ namespace Devops.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public ActionResult<ResponseResource> RequestResource([FromBody] RequestResource request)
         {
-            var response = _infrastructureService.RequestResource(request);
+            _infrastructureService.RequestResource(request);
+
+            var response = new ResponseResource();
 
             if (response == null)
             {

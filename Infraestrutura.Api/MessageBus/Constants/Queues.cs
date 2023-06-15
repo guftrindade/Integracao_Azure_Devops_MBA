@@ -2,6 +2,6 @@
 {
     public static class Queues
     {
-        public const string REQUEST_RESOURCE = "RequestResource";
+        public const string QUEUE_REQUEST_RESOURCE = "QueueRequestResource";
     }
 }

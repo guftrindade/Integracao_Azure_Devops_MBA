@@ -5,6 +5,6 @@ namespace Devops.Services.Interfaces
 {
     public interface IInfrastructureService
     {
-        Task<ResponseResource> RequestResource(RequestResource request);
+        void RequestResource(RequestResource request);
     }
 }

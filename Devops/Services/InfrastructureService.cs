@@ -7,23 +7,17 @@ namespace Devops.Services
 {
     public class InfrastructureService : IInfrastructureService
     {
-        private readonly IRabbitMessageService _rabbitMessageService;
+        private readonly IRabbitMqService _messageBus;
+        //To do: private readonly IRepository _repository;
 
-        public InfrastructureService(IRabbitMessageService rabbitMessageService)
+        public InfrastructureService(IRabbitMqService rabbitMessageService)
         {
-            _rabbitMessageService = rabbitMessageService;
+            _messageBus = rabbitMessageService;
         }
 
-        public async Task<ResponseResource> RequestResource(RequestResource request)
+        public void RequestResource(RequestResource request)
         {
-            _rabbitMessageService.Send(request);
-
-            return new ResponseResource
-            {
-                Status = "Temp",
-                ProtocolNumber = 15468,
-                Note = "Temp"
-            };
+            _messageBus.Publish(request);
         }
     }
 }

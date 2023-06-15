@@ -23,6 +23,8 @@ namespace Devops
             {
                 httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("text/xml"));
             });
+
+            
             builder.Services.Register();
 
             var app = builder.Build();
@@ -46,7 +48,10 @@ namespace Devops
         public static void Register(this IServiceCollection services)
         {
             services.AddTransient<IDevopsService, DevopsService>();
-            services.AddScoped<IRabbitMessageService, RabbitMessageService>();
+            services.AddScoped<IRabbitMqService, RabbitMqService>();
+            services.AddScoped<IInfrastructureService, InfrastructureService>();
+
+
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Infraestrutura.Api.Models.Request;
 using Infraestrutura.Api.Models.Response;
 using Infraestrutura.Api.Services.Interfaces;
+using System.Text.Json;
 
 namespace Infraestrutura.Api.Services
 {
@@ -8,6 +9,10 @@ namespace Infraestrutura.Api.Services
     {
         public async Task<ResponseResource> RequestResource(RequestResource request)
         {
+            //await Task.Run(() =>
+            //{
+                
+            //});
 
             return new ResponseResource
             {

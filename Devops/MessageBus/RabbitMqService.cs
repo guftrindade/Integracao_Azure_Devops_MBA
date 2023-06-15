@@ -9,9 +9,9 @@ using System.Text.Json;
 
 namespace Devops.RabbitServices
 {
-    public class RabbitMessageService : IRabbitMessageService
+    public class RabbitMqService : IRabbitMqService
     {
-        public void Send(RequestResource message)
+        public void Publish(RequestResource message)
         {
             var factory = new ConnectionFactory()
             {
@@ -23,7 +23,7 @@ namespace Devops.RabbitServices
             using var connection = factory.CreateConnection();
             using var channel = connection.CreateModel();
 
-            channel.QueueDeclare(queue: Queues.REQUEST_RESOURCE,
+            channel.QueueDeclare(queue: Queues.QUEUE_REQUEST_RESOURCE,
                                  durable: false,
                                  exclusive: false,
                                  autoDelete: false,
@@ -33,9 +33,12 @@ namespace Devops.RabbitServices
             var body = Encoding.UTF8.GetBytes(json);
 
             channel.BasicPublish(exchange: "",
-                                 routingKey: Queues.REQUEST_RESOURCE,
+                                 routingKey: Queues.QUEUE_REQUEST_RESOURCE,
                                  basicProperties: null,
                                  body: body);
+
+            
+            Console.WriteLine($"Mensagem enviada - {DateTime.Now}");
         }
         
     }

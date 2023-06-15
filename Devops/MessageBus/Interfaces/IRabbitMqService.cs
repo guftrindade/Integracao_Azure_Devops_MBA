@@ -2,8 +2,8 @@
 
 namespace Devops.RabbitServices.Interfaces
 {
-    public interface IRabbitMessageService
+    public interface IRabbitMqService
     {
-        void Send(RequestResource message);
+        void Publish(RequestResource message);
     }
 }

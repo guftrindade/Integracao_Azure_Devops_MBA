@@ -33,5 +33,7 @@ namespace Devops.ViewModels.Infrastructure.Request
         /// </summary>
         /// <example>gustavotrindade@dev.com</example>
         public string Email { get; set; }
+
+        public DateTime Date { get; set; } = DateTime.UtcNow;
     }
 }

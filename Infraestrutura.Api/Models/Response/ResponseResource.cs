@@ -22,5 +22,7 @@ namespace Infraestrutura.Api.Models.Response
         /// </summary>
         /// <example>45645</example>
         public int ProtocolNumber { get; set; }
+
+        public DateTime Date { get; set; }
     }
 }
