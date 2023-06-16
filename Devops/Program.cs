@@ -50,8 +50,6 @@ namespace Devops
             services.AddTransient<IDevopsService, DevopsService>();
             services.AddScoped<IRabbitMqService, RabbitMqService>();
             services.AddScoped<IInfrastructureService, InfrastructureService>();
-
-
         }
     }
 }

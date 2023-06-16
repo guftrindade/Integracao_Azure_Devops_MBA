@@ -1,7 +1,6 @@
 ﻿using Devops.RabbitServices.Interfaces;
 using Devops.Services.Interfaces;
 using Devops.ViewModels.Infrastructure.Request;
-using Devops.ViewModels.Infrastructure.Response;
 
 namespace Devops.Services
 {

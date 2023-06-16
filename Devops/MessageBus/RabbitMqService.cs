@@ -1,9 +1,7 @@
 ﻿using Devops.RabbitServices.Constants;
 using Devops.RabbitServices.Interfaces;
 using Devops.ViewModels.Infrastructure.Request;
-using Microsoft.AspNetCore.Connections;
 using RabbitMQ.Client;
-using RabbitMQ.Client.Events;
 using System.Text;
 using System.Text.Json;
 
@@ -36,10 +34,6 @@ namespace Devops.RabbitServices
                                  routingKey: Queues.QUEUE_REQUEST_RESOURCE,
                                  basicProperties: null,
                                  body: body);
-
-            
-            Console.WriteLine($"Mensagem enviada - {DateTime.Now}");
         }
-        
     }
 }

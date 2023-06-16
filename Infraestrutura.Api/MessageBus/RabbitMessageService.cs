@@ -1,7 +1,5 @@
 ﻿using Infraestrutura.Api.Models.Request;
-using Infraestrutura.Api.Models.Response;
 using Infraestrutura.Api.RabbitServices.Constants;
-using Infraestrutura.Api.RabbitServices.Interfaces;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System.Text;
@@ -52,8 +50,7 @@ namespace Infraestrutura.Api.RabbitServices
                 var body = ea.Body.ToArray();
                 var json = Encoding.UTF8.GetString(body);
 
-                var message = JsonSerializer.Deserialize<ResponseResource>(json);
-                Console.WriteLine($" Dados da fila: {Queues.QUEUE_REQUEST_RESOURCE} - {message.Note} - {message.ProtocolNumber} - {message.Date}");
+                var message = JsonSerializer.Deserialize<RequestResource>(json);
 
                 //Notify(@event).Wait();
 
@@ -63,8 +60,7 @@ namespace Infraestrutura.Api.RabbitServices
             _channel.BasicConsume(queue: Queues.QUEUE_REQUEST_RESOURCE,
                                  autoAck: false,
                                  consumer: consumer);
-
-            Console.WriteLine($"Mensagem recebida - {DateTime.Now}");
+            
 
             return Task.CompletedTask;
         }
