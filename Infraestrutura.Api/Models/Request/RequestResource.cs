@@ -33,5 +33,7 @@ namespace Infraestrutura.Api.Models.Request
         /// </summary>
         /// <example>gustavotrindade@dev.com</example>
         public string Email { get; set; }
+
+        public DateTime Date { get; set; } 
     }
 }

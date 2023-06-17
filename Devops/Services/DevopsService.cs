@@ -20,7 +20,7 @@ namespace Devops.Services
             _httpClientFactory = httpClientFactory;
         }
 
-        public async Task<ResponseResource> CreateRepositoryAsync(RequestRepository request)
+        public async Task<ResponseRepository> CreateRepositoryAsync(RequestRepository request)
         {
             request.Name = SetRepositoryName(request.Name, request.ResourceType);
             
@@ -30,19 +30,19 @@ namespace Devops.Services
 
             if (!TratarErrosResponse(response))
             {
-                return new ResponseResource
+                return new ResponseRepository
                 {
                     ResponseResult = await DeserializarObjetoResponse<ResponseResult>(response)
                 };
             }
 
-            var responseResource = await DeserializarObjetoResponse<ResponseResource>(response);
+            var responseResource = await DeserializarObjetoResponse<ResponseRepository>(response);
             SaveInDataBase(responseResource);
 
             return responseResource;
         }
 
-        private void SaveInDataBase(ResponseResource response)
+        private void SaveInDataBase(ResponseRepository response)
         {
             
         }

@@ -1,7 +1,6 @@
 using Infraestrutura.Api.RabbitServices;
 using Infraestrutura.Api.Services;
 using Infraestrutura.Api.Services.Interfaces;
-using Microsoft.AspNetCore.Builder;
 
 var builder = WebApplication.CreateBuilder(args);
 

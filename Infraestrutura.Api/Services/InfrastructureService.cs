@@ -1,7 +1,6 @@
 ﻿using Infraestrutura.Api.Models.Request;
 using Infraestrutura.Api.Models.Response;
 using Infraestrutura.Api.Services.Interfaces;
-using System.Text.Json;
 
 namespace Infraestrutura.Api.Services
 {

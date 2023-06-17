@@ -2,12 +2,13 @@
 using Devops.ViewModels.Devops.Request;
 using Devops.ViewModels.Devops.Response;
 using Devops.Services.Interfaces;
-using Newtonsoft.Json;
-using System.Net;
-using System.Text;
+using NSwag.Annotations;
 
 namespace Devops.Controllers
 {
+    [Route("api/repository")]
+    [ApiController]
+    [OpenApiTag("Repository", Description = "Serviços de Recursos para Portal do Azure")]
     public class DevopsController : Controller
     {
         private readonly IDevopsService _devopsService;
@@ -20,7 +21,7 @@ namespace Devops.Controllers
         [HttpPost("repository")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<ResponseResource>> CreateRepositoryAsync([FromBody] RequestRepository request)
+        public async Task<ActionResult<ResponseRepository>> CreateRepositoryAsync([FromBody] RequestRepository request)
         {
             var response = await _devopsService.CreateRepositoryAsync(request);
 
