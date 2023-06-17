@@ -42,7 +42,6 @@ namespace Infraestrutura.Api.RabbitServices
 
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
         { 
-
             var consumer = new EventingBasicConsumer(_channel);
 
             consumer.Received += async (model, ea) =>
