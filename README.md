@@ -8,6 +8,7 @@ Projeto desenvolvido para o MBA de Engenharia de Software Ágil e vem sendo util
 - Swagger
 - Injeção de Dependência
 - Mensageria com RabbitMQ
+- Cache com REDIS
 
 ## Funcionalidades
 - Cadastro e Detalhes de Repositórios criados no Azure DevOps
