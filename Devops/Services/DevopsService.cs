@@ -26,10 +26,10 @@ namespace Devops.Services
         public async Task<ResponseRepository> CreateRepositoryAsync(RequestRepository request)
         {
             request.Name = SetRepositoryName(request.Name, request.ResourceType);
-            
+
             var content = SetContent(request);
             var httpClient = SetHttpClient();
-            var response = await httpClient.PostAsync(RepositoryUri, content);
+            var response = await httpClient.PostAsync(Constants.REPOSITORY_URI, content);
 
             if (!TratarErrosResponse(response))
             {
@@ -47,7 +47,7 @@ namespace Devops.Services
 
         private void SaveInDataBase(ResponseRepository response)
         {
-            
+
         }
 
         private static StringContent SetContent(RequestRepository request)
@@ -56,61 +56,42 @@ namespace Devops.Services
             return new StringContent(json, Encoding.UTF8, "application/json");
         }
 
-        //public async Task<ResponseAllProjects> GetAllProjectsAsync()
-        //{
-        //    var httpClient = SetHttpClient();
-        //    string requestUri = "https://dev.azure.com/catalogomba/00414692-b741-4744-9162-6098e58a5fae/_apis/git/repositories";
-        //    var response = await httpClient.GetAsync(requestUri);
-
-        //    if (!response.StatusCode.Equals(HttpStatusCode.OK))
-        //    {
-        //        return null;
-        //    }
-
-        //    var responseBody = await response.Content.ReadAsStringAsync();
-        //    return JsonConvert.DeserializeObject<ResponseAllProjects>(responseBody);
-        //}
 
         public async Task<ResponseAllProjects> GetAllProjectsAsync()
         {
-            var cacheKey = "repositories";
-            string serializeRepository;
-            var responseRepository = new ResponseAllProjects();
+            var redisRepositories = await _distributedCache.GetAsync(Constants.CACHE_REPOSITORIES_KEY);
 
-            var redisRepositories = await _distributedCache.GetAsync(cacheKey);
-
-            if(redisRepositories != null)
+            if (redisRepositories != null)
             {
-                serializeRepository = Encoding.UTF8.GetString(redisRepositories);
-                responseRepository = JsonConvert.DeserializeObject<ResponseAllProjects>(serializeRepository);
+                var serializeRepository = Encoding.UTF8.GetString(redisRepositories);
+                return JsonConvert.DeserializeObject<ResponseAllProjects>(serializeRepository);
             }
-            else
+
+            var httpClient = SetHttpClient();
+            var response = await httpClient.GetAsync(Constants.REPOSITORIES_URI);
+
+            if (!response.StatusCode.Equals(HttpStatusCode.OK))
             {
-                var httpClient = SetHttpClient();
-                string requestUri = "https://dev.azure.com/catalogomba/00414692-b741-4744-9162-6098e58a5fae/_apis/git/repositories";
-                var response = await httpClient.GetAsync(requestUri);
-
-                if (!response.StatusCode.Equals(HttpStatusCode.OK))
-                {
-                    return null;
-                }
-
-
-                var responseBody = await response.Content.ReadAsStringAsync();
-                responseRepository = JsonConvert.DeserializeObject<ResponseAllProjects>(responseBody);
-
-
-                serializeRepository = JsonConvert.SerializeObject(responseRepository);
-                redisRepositories = Encoding.UTF8.GetBytes(serializeRepository);
-
-                var options = new DistributedCacheEntryOptions()
-                    .SetAbsoluteExpiration(DateTime.Now.AddMinutes(10))
-                    .SetSlidingExpiration(TimeSpan.FromMinutes(2));
-
-                await _distributedCache.SetAsync(cacheKey, redisRepositories, options);
+                return null;
             }
+
+            var responseBody = await response.Content.ReadAsStringAsync();
+            var responseRepository = JsonConvert.DeserializeObject<ResponseAllProjects>(responseBody);
+            await SetCacheRedis(responseRepository);
 
             return responseRepository;
+        }
+
+        private async Task SetCacheRedis(ResponseAllProjects repositories)
+        {
+            var serializeRepository = JsonConvert.SerializeObject(repositories);
+            var redisRepositories = Encoding.UTF8.GetBytes(serializeRepository);
+
+            var options = new DistributedCacheEntryOptions()
+                .SetAbsoluteExpiration(DateTime.Now.AddMinutes(10))
+                .SetSlidingExpiration(TimeSpan.FromMinutes(2));
+
+            await _distributedCache.SetAsync(Constants.CACHE_REPOSITORIES_KEY, redisRepositories, options);
         }
 
         private HttpClient SetHttpClient()
@@ -120,17 +101,14 @@ namespace Devops.Services
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic",
                 Convert.ToBase64String(
                     Encoding.ASCII.GetBytes(
-                        string.Format("{0}:{1}", "", PersonalAccessToken))));
+                        string.Format("{0}:{1}", "", Constants.PAT))));
             return httpClient;
         }
 
         private static string SetRepositoryName(string name, ResourceType resourceType)
-        { 
+        {
             return Utility.SetDefaultRepositoryName(name, resourceType);
         }
-                                                   
-        private const string PersonalAccessToken = "wb6v4oczrtxxfiayyvqsmjts7y2vklvdk4cfwcoomww7wbmu2guq";
-        private const string RepositoryUri = "https://dev.azure.com/catalogomba/_apis/git/repositories?api-version=7.0";
 
         protected async Task<T> DeserializarObjetoResponse<T>(HttpResponseMessage responseMessage)
         {
@@ -141,7 +119,6 @@ namespace Devops.Services
 
             return System.Text.Json.JsonSerializer.Deserialize<T>(await responseMessage.Content.ReadAsStringAsync(), options);
         }
-
 
         protected bool TratarErrosResponse(HttpResponseMessage response)
         {
