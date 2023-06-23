@@ -24,6 +24,11 @@ namespace Devops
                 httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("text/xml"));
             });
 
+            builder.Services.AddStackExchangeRedisCache(options =>
+            {
+                options.Configuration = "localhost:6379";
+            });
+
             
             builder.Services.Register();
 
