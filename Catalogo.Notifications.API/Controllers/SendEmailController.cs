@@ -1,8 +1,6 @@
-﻿using Catalogo.Notifications.API.Infrastructure;
-using Catalogo.Notifications.API.Interfaces;
+﻿using Catalogo.Notifications.API.Interfaces;
 using Catalogo.Notifications.API.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using NSwag.Annotations;
 using SendGrid;
 
