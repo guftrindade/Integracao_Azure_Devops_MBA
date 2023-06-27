@@ -9,6 +9,7 @@ Projeto desenvolvido para o MBA de Engenharia de Software Ágil e vem sendo util
 - Injeção de Dependência
 - Mensageria com RabbitMQ
 - Cache com REDIS
+- Envio de Email com SendGrid
 
 ## Funcionalidades
 - Cadastro e Detalhes de Repositórios criados no Azure DevOps
