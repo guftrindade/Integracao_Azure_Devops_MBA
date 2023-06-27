@@ -9,8 +9,6 @@ using Devops.ViewModels.Devops.Enums;
 using Devops.Services.Interfaces;
 using System.Text.Json;
 using Microsoft.Extensions.Caching.Distributed;
-using SendGrid.Helpers.Mail;
-using SendGrid;
 
 namespace Devops.Services
 {
@@ -61,8 +59,6 @@ namespace Devops.Services
 
         public async Task<ResponseAllProjects> GetAllProjectsAsync()
         {
-            Execute().Wait();
-
             var redisRepositories = await _distributedCache.GetAsync(Constants.CACHE_REPOSITORIES_KEY);
 
             if (redisRepositories != null)
@@ -155,21 +151,6 @@ namespace Devops.Services
             {
                 StatusCode = statusCode;
             }
-        }
-
-        static async Task Execute()
-        {
-            var apiKey = "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";
-            var client = new SendGridClient(apiKey);
-            var from = new EmailAddress("gftrindade2023@gmail.com", "Gustavo");
-            var subject = "Sending with SendGrid is Fun";
-            var to = new EmailAddress("seleyaw352@dronetz.com", "Email Teste");
-            var plainTextContent = "and easy to do anywhere, even with C#";
-            var htmlContent = "<strong>and easy to do anywhere, even with C#</strong>";
-            var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
-            var response = await client.SendEmailAsync(msg);
-            Console.WriteLine(response.StatusCode);
-            Console.WriteLine(response.Body.ReadAsStringAsync());
         }
     }
 }
