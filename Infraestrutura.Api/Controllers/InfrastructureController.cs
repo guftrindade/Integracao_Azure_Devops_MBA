@@ -25,6 +25,7 @@ namespace Infraestrutura.Api.Controllers
         {
             var response = _infrastructureService.RequestResource(request);
 
+
             if (response == null)
             {
                 return BadRequest();
@@ -32,5 +33,7 @@ namespace Infraestrutura.Api.Controllers
 
             return Ok(response);
         }
+
+
     }
 }
