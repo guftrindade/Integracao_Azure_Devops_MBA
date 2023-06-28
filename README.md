@@ -6,6 +6,7 @@ Projeto desenvolvido para o MBA de Engenharia de Software Ágil e vem sendo util
 - ASP.NET Core com .NET 6
 - SQL Server
 - Swagger
+- Docker
 - Injeção de Dependência
 - Mensageria com RabbitMQ
 - Cache com REDIS
